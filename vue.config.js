@@ -1,6 +1,7 @@
 module.exports = {
-devServer: {
+  devServer: {
     disableHostCheck: true,
-    hot: true
+    hot: true,
+    https: true
   }
 }
