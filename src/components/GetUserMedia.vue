@@ -4,32 +4,29 @@
         <video autoplay playsinline ref="video"></video>
         <button v-on:click="takeSnapshot">Take snapshot</button>
         <button v-on:click="play">Play</button>
+        <button v-on:click="pause">Pause</button>
         <canvas ref="canvas"></canvas>
         <div>{{errMsg}}</div>
     </div>
 </template>
 
 <script>
-// import 'webrtc-adapter'
 export default {
   name: 'GetUserMedia',
   data () {
     return {
       constraints: {
         audio: false,
-        video: true
+        video: {width: {exact: 200}, height: {exact: 150}}
       },
-      errMsg: 'hehe'
+      errMsg: ''
     }
   },
   mounted: function () {
-    this.$refs.canvas.width = 320
-    this.$refs.canvas.height = 240
-    this.errMsg = 'mounted'
-    var gum = navigator.mediaDevices.getUserMedia(this.constraints)
-    this.errMsg = 'gum'
-    gum.then(this.handleSuccess).catch(this.handleError)
-    this.errMsg = 'after gum'
+    let canvas = this.$refs.canvas
+    canvas.width = 200
+    canvas.height = 150
+    navigator.mediaDevices.getUserMedia(this.constraints).then(this.handleSuccess).catch(this.handleError)
   },
   methods: {
     handleSuccess: function (stream) {
@@ -38,16 +35,19 @@ export default {
     },
     handleError: function (error) {
       this.errMsg = error
-      console.log(error)
     },
     takeSnapshot: function () {
-      console.log('button clicked')
-      this.$refs.canvas.width = this.$refs.video.videoWidth
-      this.$refs.canvas.height = this.$refs.video.videoHeight
-      this.$refs.canvas.getContext('2d').drawImage(this.$refs.video, 0, 0, this.$refs.canvas.width, this.$refs.canvas.height)
+      let canvas = this.$refs.canvas
+      let video = this.$refs.video
+      canvas.width = video.videoWidth
+      canvas.height = video.videoHeight
+      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
     },
     play: function () {
       this.$refs.video.play()
+    },
+    pause: function () {
+      this.$refs.video.pause()
     }
   }
 }
