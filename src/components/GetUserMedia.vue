@@ -17,12 +17,12 @@ export default {
     return {
       constraints: {
         audio: false,
-        video: {width: {exact: 200}, height: {exact: 150}}
+        video: {facingMode: 'user'}
       },
       errMsg: ''
     }
   },
-  mounted: function () {
+  mounted () {
     let canvas = this.$refs.canvas
     canvas.width = 200
     canvas.height = 150
@@ -35,6 +35,7 @@ export default {
     },
     handleError: function (error) {
       this.errMsg = error
+      console.log(error)
     },
     takeSnapshot: function () {
       let canvas = this.$refs.canvas
